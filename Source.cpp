@@ -1,14 +1,31 @@
+/*
+	Prompt from: http://www.reddit.com/r/dailyprogrammer/comments/38yy9s/20150608_challenge_218_easy_making_numbers/
+	Tyler Hilbert's Implementation
+*/
+
 #include <iostream>
 #include <string>
+#include "BigNum.h"
 
 using namespace std;
 
-bool palindromic(unsigned long long n);
-unsigned long long step(unsigned long long n);
+bool palindromic(BigNum &n);
+BigNum step(BigNum &n);
 
 int main() {
-	unsigned long inNum = 196196871;
-	unsigned long long num = inNum;
+	string inStr;
+	cout << "Enter Num: ";
+	cin >> inStr;
+	if (inStr.find_first_not_of("0123456789") != string::npos) {
+		cout
+			<< inStr
+			<< " is not a number\n";
+		system("pause");
+		return 0;
+	}
+
+	BigNum inNum(inStr);
+	BigNum num(inNum);
 	unsigned int n = 0;
 	while (!palindromic(num)) {
 		num = step(num);
@@ -16,19 +33,19 @@ int main() {
 	}
 	
 	cout
-		<< inNum
+		<< inNum.toString()
 		<< " gets palindromic after "
 		<< n
 		<< " steps: "
-		<< num 
+		<< num.toString()
 		<< "\n";
 
 	system("pause");
 	return 1;
 }
 
-bool palindromic(unsigned long long n) {
-	string num = to_string(n);
+bool palindromic(BigNum &n) {
+	string num = n.toString();
 	if (num.length() % 2 == 1) {
 		num = num.erase(num.length() / 2, 1);
 	}
@@ -42,8 +59,8 @@ bool palindromic(unsigned long long n) {
 	return true;
 }
 
-unsigned long long step(unsigned long long n) {
-	string num = to_string(n);
-	num = string(num.rbegin(), num.rend()); // Flip string
-	return n + stoull(num);
+BigNum step(BigNum &n) {
+	string s(n.toString());
+	BigNum reversed(string(s.rbegin(), s.rend())); // Flip string
+	return n.add(reversed);
 }
