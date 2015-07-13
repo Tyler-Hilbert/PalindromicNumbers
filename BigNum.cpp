@@ -1,4 +1,5 @@
 #include "BigNum.h"
+#include <algorithm>
 
 BigNum::BigNum(const string& n) {
 	nums = vector<char>(n.begin(), n.end());

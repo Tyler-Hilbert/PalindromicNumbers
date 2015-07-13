@@ -9,10 +9,20 @@
 
 using namespace std;
 
+void mainChallenge();
+void secondChallenge();
 bool palindromic(BigNum &n);
 BigNum step(BigNum &n);
 
+
 int main() {
+	//mainChallenge();
+	secondChallenge();
+	system("pause");
+	return 1;
+}
+
+void mainChallenge() {
 	string inStr;
 	cout << "Enter Num: ";
 	cin >> inStr;
@@ -20,8 +30,7 @@ int main() {
 		cout
 			<< inStr
 			<< " is not a number\n";
-		system("pause");
-		return 0;
+		return;
 	}
 
 	BigNum inNum(inStr);
@@ -31,7 +40,7 @@ int main() {
 		num = step(num);
 		n++;
 	}
-	
+
 	cout
 		<< inNum.toString()
 		<< " gets palindromic after "
@@ -39,9 +48,34 @@ int main() {
 		<< " steps: "
 		<< num.toString()
 		<< "\n";
+}
 
-	system("pause");
-	return 1;
+void secondChallenge() {
+	vector<BigNum> palindromics;
+	for (int i = 1; i <= 1000; i++) {
+		BigNum num(to_string(i));
+		
+		for (int k = 1; k < 10000; k++) {
+			if (palindromic(num)) {
+				// Check if palindromic has been found before
+				bool found = false;
+				for (int p = 0; p < palindromics.size(); p++) {
+					if (num.toString() == palindromics.at(p).toString()) {
+						found = true;
+						break;
+					}
+				}
+				if (found) {
+					cout << num.toString() << " is a duplicate\n";
+				} else {
+					palindromics.push_back(num);
+				}
+				break;
+			}
+			num = step(num);
+		}
+	}
+
 }
 
 bool palindromic(BigNum &n) {
